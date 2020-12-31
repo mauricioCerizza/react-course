@@ -1,7 +1,6 @@
-import { React, Component, useState } from "react";
-import "./App.css";
-import Person from "./Person/Person";
-import "./Person/Person.css";
+import { React, Component } from 'react';
+import classes from './App.module.css';
+import Person from './Person/Person';
 
 class App extends Component {
   state = {
@@ -51,18 +50,26 @@ class App extends Component {
 
 
   render() {
-    const style = {
-      backgroundColor: "white",
-      font: "inherit",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer",
-    };
+    let showPersonsText = 'Show Persons';
+    let buttonClass = [classes.Button]
 
     let persons = null;
 
+    const assignedClasses = [];
+
+    if (this.state.persons.length <= 2) {
+      assignedClasses.push(classes.red); 
+    }
+
+    if (this.state.persons.length <= 1) {
+      assignedClasses.push(classes.bold);
+    }
+
     if (this.state.showPersons)
     {
+      showPersonsText = 'Hide Persons';
+      buttonClass.push(classes.Red);
+
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -79,48 +86,16 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
+      <div className={classes.App}>
         <h1>HI WORLD!!</h1>
-        <p>This is really working!!</p>
-        <button style={style} onClick={this.togglePersonsHandler}>
-          Switch Person
+        <p className={assignedClasses.join(' ')}>This is really working!!</p>
+        <button className={buttonClass.join(' ')} onClick={this.togglePersonsHandler}>
+          {showPersonsText}
         </button>
         {persons}
       </div>
     );
-
-    //return React.createElement('div', {className: App}, React.createElement('h1', null, 'Hi World!'));
   }
 }
 
-/* const App = props => {
-  const [ personsState, setPersonsState ] = useState({
-    persons: [
-      { name: 'Max', age: 29 },
-      { name: 'Mauri', age: 28 },
-      { name: 'Maru', age: 30 }
-    ],
-    otherState: 'otro valor'
-  });
-
-  const switchNameHandler = () => {
-    setPersonsState ({
-      persons: [
-        { name: 'Max', age: 30 },
-        { name: 'Mauri', age: 28 },
-        { name: 'Maru', age: 31 }
-      ]
-    });
-  }
-
-  return (
-    <div className="App">
-      <h1>HI WORLD!!</h1>
-      <p>This is really working!!</p>
-      <button onClick={switchNameHandler}>Switch Person</button>
-      <Person name={personsState.persons[0].name} age={personsState.persons[0].age}/>
-    </div>
-  ); 
-} */
-
-export default App;
+export default App; 
